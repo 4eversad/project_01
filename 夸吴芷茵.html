@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box {
+            width: 400px;
+            height: 400px;
+            margin: 0 auto;
+        }
+
+        .words {
+            width: 800px;
+            height: 500px;
+            border: 1px solid #666;
+        }
+
+        button {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="words"></div>
+        <button class="send">查看疫情状况</button>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        let btn = document.querySelector('.send');
+        let words = document.querySelector('.words');
+        btn.onclick = function () {
+            axios({
+                url: 'http://api.tianapi.com/ncov/index',
+                params: {
+                    key: '2b44e717286afa3fb82db471f4c1b402'
+                }
+            }).then(res => {
+                console.log(res);
+                words.innerHTML = '';
+                let re = res.data.newslist[0].news
+                let result = []
+                for (var i = 0; i < re.length; i++) {
+                    result.push('时间:' + re[i].pubDateStr + '\n',  re[i].title + '\n' + '总计:' + re[i].summary + '\n')
+                }
+                console.log(result);
+                words.innerHTML = result;
+
+
+
+            }).catch(err => console.log(err))
+        }
+    </script>
+
+</body>
+
+</html>

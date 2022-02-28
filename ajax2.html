@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+
+</style>
+
+<body>
+
+    <button onclick="showGet()">GET请求</button>
+    <button onclick="showPost()">POST请求</button>
+    <button onclick="showPut()">PUT请求</button>
+    <button onclick="showDelete()">DELETE请求</button>
+    <button onclick="getData()">批量请求</button>
+    <button onclick="header()">请求头</button>
+    <button onclick="errorHandling()">报错</button>
+
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        function showGet() {
+            axios({
+                url: 'http://jsonplaceholder.typicode.com/posts',
+                params: { _limit: 5 },
+                method: 'GET'
+            }).then(res => console.log(res));
+
+        }
+
+        function showPost() {
+            axios({
+                url: 'http://jsonplaceholder.typicode.com/posts?',
+                method: 'POST',
+                datas: {
+                    userId: 'yftttttt',
+                    pssword: 123456
+                }
+            }).then(res => console.log(res, res.config.datas));
+
+        }
+        function showPut() {
+            axios({
+                url: 'http://jsonplaceholder.typicode.com/posts/1',
+                method: 'put',
+                datas: {
+                    userId: '111',
+                    title: '睡不着所以学编程'
+                }
+            }).then(res => console.log(res))
+
+        }
+        function showDelete() {
+            axios.delete(
+                url = 'http://jsonplaceholder.typicode.com/posts/1',
+
+            ).then(res => console.log(res))
+
+        }
+        function getData() {
+            axios.all([
+                axios.get('http://jsonplaceholder.typicode.com/posts/1'),
+                axios.get('http://jsonplaceholder.typicode.com/todos/1')
+            ]).then(res => console.log(res))
+                .catch(err => console.error(err))
+        }
+        function header() {
+            // 配置请求头
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'sometoken'
+                }
+            }
+            axios.post('http://jsonplaceholder.typicode.com/posts',
+                {
+                    userId: '111',
+                    title: '睡不着所以学编程'
+
+                }, config)
+        }
+        function errorHandling() {
+            axios.get({
+                url: 'http://jsonplaceholder.typicode.com/posts',
+                params: { limit: 5 }
+
+            })
+                .then(res => {
+                    console.log('成功');
+                }).catch(err => {
+                    if (err.response) {xx    
+                        console.log('data' + err.response.data);
+                        console.log(err.response.status);
+                        console.log(err.response.headers);
+                    }
+                })  
+        }
+
+
+
+
+
+    </script>
+</body>
+
+</html>
