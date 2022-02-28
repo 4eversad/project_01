@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .box {
+            width: 400px;
+            height: 800px;
+            margin: 100px auto;
+        }
+
+        .robot-msg {
+            width: 260px;
+            height: 140px;
+            border: 1px solid #666;
+        }
+
+        .my-msg {
+            width: 260px;
+            height: 25px;
+            margin-top: 20px;
+            outline: none;
+        }
+
+        button {
+            width: 40px;
+            height: 25px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="robot-msg"></div>
+        <input type="text" class="my-msg">
+        <button class='send'>发送</button>
+    </div>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+
+        let robot_msg = document.querySelector('.robot-msg')
+        let send_btn = document.querySelector('.send')
+        let my_msg = document.querySelector('.my-msg')
+
+        my_msg.addEventListener('keyup', function (e) {
+            let question = my_msg.value
+            if (e.key === 'Enter') {
+                getData(question)
+            }
+        })
+        send_btn.addEventListener('click', function () {
+            let question = my_msg.value
+            getData(question)
+        })
+        function getData(question) {
+            if (my_msg.value.trim() != '') {
+                axios({
+                    url: 'http://api.tianapi.com/robot/index',
+                    params: {
+                        key: '2b44e717286afa3fb82db471f4c1b402',
+                        question: question
+                    },
+                }).then(res => {
+                    console.log(res);
+                    my_msg.value = '';
+                    // rebot_msg.value = '';
+                    robot_msg.innerHTML = res.data.newslist[0].reply
+                }).catch(err => {
+                    console.log(err);
+                }
+                )
+            }
+            else {
+                alert('请输入问题!')
+            }
+        }
+
+
+
+    </script>
+</body>
+
+</html>
